@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1b1b1b;
+            color: #ffffff;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .container {
+            max-width: 900px;
+            padding: 40px 510px 40px 40px;
+            border-radius: 10px;
+            display: flex;
+            gap: 40px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            z-index: 1; /* Lower z-index to ensure modal appears above it */
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: -1; /* Ensure it's below the content */
+        }
+
+        .poster {
+            width: 300px;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .details {
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .release-date, .genres, .duration {
+            font-size: 14px;
+            color: #cccccc;
+            margin: 5px 0;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            font-size: 18px;
+            color: #ffc107;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .overview-title {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+
+        .overview {
+            font-size: 16px;
+            color: #cccccc;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .watchlist-btn {
+            background-color: #ffc107;
+            color: #1b1b1b;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .watchlist-btn:hover {
+            background-color: #ffb300;
+        }
+
+        /* Wishlist button at the top-right */
+        .wishlist-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it appears on top */
+        }
+
+        .wishlist-btn:hover {
+            background-color: #e3406e;
+        }
+
+        /* Wishlist Modal */
+        .wishlist-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-y: auto;
+            padding: 20px;
+            z-index: 9999; /* Ensure the modal is on top of everything */
+        }
+
+        .wishlist-modal h2 {
+            color: white;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        .wishlist-modal ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .wishlist-modal ul li {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .close-wishlist {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .carousel-container {
+            max-width: 100%;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .carousel-title{
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .actor-card {
+            background-color: #333;
+            border-radius: 10px;
+            width: 160px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            padding: 10px;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .actor-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .actor-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .character-name {
+            font-size: 14px;
+            color: #cccccc;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <!-- Wishlist Button -->
+    <button class="wishlist-btn" id="wishlistBtn">Wishlist</button>
+
+    <!-- Wishlist Modal -->
+    <div class="wishlist-modal" id="wishlistModal">
+        <span class="close-wishlist" id="closeWishlist">&times;</span>
+        <h2>Your Wishlist</h2>
+        <ul id="wishlistItems">
+            <!-- List of movies in the watchlist will be shown here -->
+        </ul>
+    </div>
+
+    <div class="container" id="backgroundContainer">
+        <img id="moviePoster" class="poster" alt="Movie Poster" src="">
+        <div class="details">
+            <h1 id="movieTitle" class="title">Loading...</h1>
+            <p id="movieReleaseDate" class="release-date">Release Date: </p>
+            <p id="movieGenres" class="genres">Genres: </p>
+            <p id="movieDuration" class="duration">Duration: </p>
+            <p id="movieRating" class="rating">Rating: <span id="movieRatingValue"></span></p>
+            <p class="overview-title">Overview</p>
+            <p id="movieOverview" class="overview">Overview: </p>
+            <!-- Watchlist Button -->
+            <button id="watchlistBtn" class="watchlist-btn">Add to Watchlist</button>
+        </div>
+    </div>
+
+    <!-- Trailer Section -->
+    <div class="trailer-title">Trailer</div>
+    <div class="trailer-container" id="trailerContainer">
+        <!-- Trailer video will be embedded here -->
+    </div>
+
+    <!-- Cast Section -->
+    <div class="carousel-title">Actors</div>
+    <div class="carousel-container">
+        <div class="carousel" id="castCarousel">
+            <!-- Actor cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'e5881fc67d9981b40fd05d557c061b76';
+        const API_URL_DETAILS = 'https://api.themoviedb.org/3/movie';
+        const API_URL_CAST = 'https://api.themoviedb.org/3/movie';
+        const API_URL_VIDEOS = 'https://api.themoviedb.org/3/movie';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieId = urlParams.get('id');
+        const watchlistKey = 'watchlist';
+
+        async function fetchMovieDetails() {
+            try {
+                const response = await fetch(`${API_URL_DETAILS}/${movieId}?api_key=${API_KEY}`);
+                if (!response.ok) {
+                    throw new Error(`Error fetching movie details: ${response.statusText}`);
+                }
+                const movie = await response.json();
+                displayMovieDetails(movie);
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+                document.getElementById('movieTitle').textContent = 'Error loading movie details';
+            }
+        }
+
+        async function fetchMovieCast() {
+            try {
+                const response = await fetch(`${API_URL_CAST}/${movieId}/credits?api_key=${API_KEY}`);
+                if (!response.ok) {
+                    throw new Error(`Error fetching cast details: ${response.statusText}`);
+                }
+                const castData = await response.json();
+                displayCast(castData.cast);
+            } catch (error) {
+                console.error('Error fetching cast details:', error);
+            }
+        }
+
+        async function fetchMovieTrailer() {
+            try {
+                const response = await fetch(`${API_URL_VIDEOS}/${movieId}/videos?api_key=${API_KEY}`);
+                if (!response.ok) {
+                    throw new Error(`Error fetching trailer: ${response.statusText}`);
+                }
+                const videoData = await response.json();
+                displayTrailer(videoData.results);
+            } catch (error) {
+                console.error('Error fetching trailer:', error);
+            }
+        }
+
+        function displayMovieDetails(movie) {
+            document.getElementById('movieTitle').textContent = `${movie.title || 'No title'} (${movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'})`;
+            document.getElementById('moviePoster').src = `https://image.tmdb.org/t/p/w300${movie.poster_path || ''}`;
+            document.getElementById('movieReleaseDate').textContent = `Release Date: ${movie.release_date || 'N/A'}`;
+            document.getElementById('movieGenres').textContent = `Genres: ${movie.genres ? movie.genres.map(genre => genre.name).join(', ') : 'N/A'}`;
+            document.getElementById('movieDuration').textContent = `Duration: ${movie.runtime ? movie.runtime + ' min' : 'N/A'}`;
+            document.getElementById('movieRatingValue').textContent = `${movie.vote_average || 'N/A'}`;
+            document.getElementById('movieOverview').textContent = `${movie.overview || 'N/A'}`;
+            document.getElementById('backgroundContainer').style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path || ''}')`;
+
+            updateWatchlistButton(movie);
+        }
+
+        function displayTrailer(videos) {
+            const trailerContainer = document.getElementById('trailerContainer');
+            const trailer = videos.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+
+            if (trailer) {
+                trailerContainer.innerHTML = `
+                    <iframe width="560" height="315" 
+                            src="https://www.youtube.com/embed/${trailer.key}" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>`;
+            } else {
+                trailerContainer.textContent = 'Trailer not available';
+            }
+        }
+
+        function displayCast(cast) {
+            const castCarousel = document.getElementById('castCarousel');
+            cast.slice(0, 10).forEach(actor => {
+                const actorCard = document.createElement('div');
+                actorCard.classList.add('actor-card');
+
+                const actorImage = document.createElement('img');
+                actorImage.src = `https://image.tmdb.org/t/p/w200${actor.profile_path}`;
+                actorImage.alt = actor.name;
+
+                const actorName = document.createElement('div');
+                actorName.classList.add('actor-name');
+                actorName.textContent = actor.name;
+
+                const characterName = document.createElement('div');
+                characterName.classList.add('character-name');
+                characterName.textContent = actor.character;
+
+                actorCard.appendChild(actorImage);
+                actorCard.appendChild(actorName);
+                actorCard.appendChild(characterName);
+                castCarousel.appendChild(actorCard);
+            });
+        }
+
+        function updateWatchlistButton(movie) {
+            const watchlistBtn = document.getElementById('watchlistBtn');
+            let watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
+
+            const isInWatchlist = watchlist.some(item => item.id === movie.id);
+
+            if (isInWatchlist) {
+                watchlistBtn.textContent = 'Remove from Watchlist';
+            } else {
+                watchlistBtn.textContent = 'Add to Watchlist';
+            }
+
+            watchlistBtn.onclick = () => toggleWatchlist(movie);
+        }
+
+        function toggleWatchlist(movie) {
+            let watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
+
+            const movieIndex = watchlist.findIndex(item => item.id === movie.id);
+
+            if (movieIndex !== -1) {
+                // Remove from watchlist
+                watchlist.splice(movieIndex, 1);
+            } else {
+                // Add to watchlist
+                watchlist.push(movie);
+            }
+
+            localStorage.setItem(watchlistKey, JSON.stringify(watchlist));
+            updateWatchlistButton(movie);
+            updateWishlistModal();
+        }
+
+        function updateWishlistModal() {
+            const watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
+            const wishlistItems = document.getElementById('wishlistItems');
+            wishlistItems.innerHTML = '';
+
+            watchlist.forEach(movie => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
+                wishlistItems.appendChild(listItem);
+            });
+        }
+
+        // Show or hide the wishlist modal
+        document.getElementById('wishlistBtn').onclick = () => {
+            document.getElementById('wishlistModal').style.display = 'block';
+            updateWishlistModal();
+        };
+
+        // Close the wishlist modal
+        document.getElementById('closeWishlist').onclick = () => {
+            document.getElementById('wishlistModal').style.display = 'none';
+        };
+
+        fetchMovieDetails();
+        fetchMovieCast();
+        fetchMovieTrailer();
+    </script>
+</body>
+</html>

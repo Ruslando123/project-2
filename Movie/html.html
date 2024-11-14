@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies App</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for movies...">
+            <ul id="suggestions" class="suggestions hidden"></ul>
+            <button id="searchButton">Search</button>
+        </div>
+    </header>
+
+    <button id="backButton" class="back-button hidden">Back</button>
+
+    <div class="sort-container">
+        <label for="sortOptions">Sort by:</label>
+        <select id="sortOptions">
+            <option value="popularity.desc">Popularity (High to Low)</option>
+            <option value="popularity.asc">Popularity (Low to High)</option>
+            <option value="release_date.desc">Release Date (Newest First)</option>
+            <option value="release_date.asc">Release Date (Oldest First)</option>
+            <option value="vote_average.desc">Rating (High to Low)</option>
+            <option value="vote_average.asc">Rating (Low to High)</option>
+        </select>
+    </div>
+
+    <!-- Movies Carousels -->
+    <section id="moviesGrid">
+        <div class="movie-section">
+            <h2>This Week’s Movies</h2>
+            <div id="weeklyMovies" class="carousel"></div>
+        </div>
+        <div class="movie-section">
+            <h2>Random Movies</h2>
+            <div id="randomMovies" class="carousel"></div>
+        </div>
+    </section>
+
+    <script src="search.js"></script>
+    <script src="js.js"></script>
+</body>
+</html>

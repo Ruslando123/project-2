@@ -1,0 +1,165 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #040404;
+    color: #ffffff;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #1d1d1d;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+#searchInput {
+    padding: 8px;
+    margin: 10px 0;
+    width: 500px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+#searchButton {
+    padding: 10px 15px;
+    background-color: #484848;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.suggestions {
+    position: absolute;
+    background-color: white;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 250px;
+    width: 450px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.suggestions li {
+    padding: 8px;
+    cursor: pointer;
+    color: #000;
+}
+
+.suggestions li:hover {
+    background-color: #a6a6a6;
+}
+
+.hidden {
+    display: none;
+}
+
+.back-button {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.sort-container {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sortOptions {
+    padding: 8px;
+    margin-left: 10px;
+    background-color: #1d1d1d;
+    color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Carousel container */
+.movie-section {
+    padding: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap;
+}
+
+.carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.carousel::-webkit-scrollbar-track {
+    background: #333;
+}
+
+/* Movie card styling */
+.movie-card {
+    min-width: 200px;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.movie-card img {
+    width: 100%; /* Make image take full width of the card */
+    max-width: 200px; /* Optional: constrain the maximum width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px;
+    object-fit: cover; /* Ensure images are cropped to fit within the aspect ratio */
+}
+
+
+.movie-card h3 {
+    font-size: 16px;
+    margin: 10px 0 5px;
+}
+
+.movie-card p {
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+.movie-card button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
